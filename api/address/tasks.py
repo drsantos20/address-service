@@ -5,6 +5,8 @@ from django.conf import settings
 from kombu import Connection, Exchange, Queue, Consumer
 import socket
 
+from api.address.services import get_longitude_latitude
+
 logger = get_task_logger(__name__)
 
 
@@ -23,9 +25,10 @@ def consumer_from_queue():
 
     def process_message(body, message):
         logger.info('Message arrived with the following body {}'.format(body))
+        get_longitude_latitude(body)
         message.ack()
 
-    consumer = Consumer(connection, queues=queue, callbacks=[process_message], accept=["text/plain"])
+    consumer = Consumer(connection, queues=queue, callbacks=[process_message], accept=['json', 'pickle', 'msgpack'])
     consumer.consume()
 
     def establish_connection():
