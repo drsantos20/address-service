@@ -12,9 +12,6 @@ services:
       - "8000:8000"
     volumes:
       - ./api:/api
-    depends_on:
-      - broker
-      - redis
 
   worker:
     build: .
