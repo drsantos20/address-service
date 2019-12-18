@@ -1,14 +1,19 @@
 import requests
 from django.conf import settings
 
+from api.address.utils import build_google_maps_url
+from api.celery import app
 
-def get_reverse_location(message):
+
+@app.task
+def get_longitude_latitude(body):
     google_api_key = settings.GOOGLE_API_KEY
 
-    # todo get the ID from address
+    url = build_google_maps_url(body, google_api_key)
 
     response = requests.get(
-        'https://maps.googleapis.com/maps/api/geocode/json?address=Rua+Nelson+Fernandes+450+Cidade+Vargas+Sao+Paulo,+SP&key={}'.format(google_api_key))
+        url
+    )
     resp_json_payload = response.json()
     print(resp_json_payload)
     print(resp_json_payload['results'][0]['geometry']['location'])
