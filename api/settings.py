@@ -120,7 +120,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BROKER_URL = 'amqp://user:password@localhost:5672'
-CELERY_BROKER_URL = 'amqp://user:password@localhost:5672'
+BROKER_URL = 'amqp://user:password@broker:5672'
+CELERY_BROKER_URL = 'amqp://user:password@broker:5672'
 
 GOOGLE_API_KEY = '<put-your-key-here>'
