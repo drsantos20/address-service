@@ -1,26 +1,18 @@
 version: '3.5'
 services:
 
-  app:
-    build: .
-    image: &app api
-    restart: "no"
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-    env_file: &envfile
-      - environment.env
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./api:/api
-
   worker:
     build: .
-    image: *app
     restart: "no"
-    env_file: *envfile
-    command: ["celery", "worker", "--app=worker.worker.app", "--concurrency=1", "--hostname=worker@%h", "--loglevel=INFO"]
+    env_file: &envfile
+      - environment.env
+    command: celery -A api worker -l info
     volumes:
       - ./api:/api
+    networks:
+      - my-proxy-net
 
-volumes:
-  redis_data:
+networks:
+  my-proxy-net:
+    external:
+      name: custom_network
