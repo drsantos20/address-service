@@ -28,7 +28,8 @@ def get_longitude_latitude(body):
 
         resp_json_payload = response.json()
         geo_location = resp_json_payload['results'][0]['geometry']['location']
-        publish_metadata(geo_location)
+
+        publish_metadata(address_id=body['id'], geo_location=geo_location)
 
     except requests.exceptions.HTTPError as http_error:
         return "An Http Error occurred:" + repr(http_error)
