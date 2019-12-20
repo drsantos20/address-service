@@ -6,7 +6,7 @@ services:
     restart: "no"
     env_file: &envfile
       - environment.env
-    command: celery -A api worker -l info
+    command: celery -A api worker -l info -n worker10.%h
     volumes:
       - ./api:/api
     networks:

@@ -12,7 +12,7 @@ logger = get_task_logger(__name__)
 
 @shared_task(queue='default')
 def consumer_from_queue():
-    connection = Connection(settings.BROKER_URL, heartbeat=10)
+    connection = Connection(settings.BROKER_URL, heartbeat=5)
     connection.connect()
 
     exchange = Exchange('example-exchange', type='direct')

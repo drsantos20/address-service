@@ -123,4 +123,4 @@ STATIC_URL = '/static/'
 BROKER_URL = 'amqp://user:password@broker:5672'
 CELERY_BROKER_URL = 'amqp://user:password@broker:5672'
 
-GOOGLE_API_KEY = '<put-your-key-here>'
+GOOGLE_API_KEY = ''
