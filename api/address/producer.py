@@ -1,15 +1,16 @@
-from django.conf import settings
-from kombu import Connection, Exchange, Producer, Queue
 from celery.utils.log import get_task_logger
-
+from django.conf import settings
 
 from api.celery import app
+
+from kombu import Connection, Exchange, Producer, Queue
+
 
 logger = get_task_logger(__name__)
 
 
 @app.task
-def publish_metadata(message):
+def publish_metadata(address_id, geo_location):
     connection = Connection(settings.BROKER_URL)
     connection.connect()
     channel = connection.channel()
@@ -18,17 +19,18 @@ def publish_metadata(message):
 
     producer = Producer(
         channel=channel,
-        routing_key='address-detail',
+        routing_key='geolocation',
         exchange=exchange,
     )
     queue = Queue(
         name='order-address-queue',
-        routing_key='address-detail',
+        routing_key='geolocation',
         exchange=exchange,
     )
 
-    logger.info('Starting Producer to Send Geo Location to {} queue'.format(queue.name))
+    geo_location.update({'id': address_id})
 
     queue.maybe_bind(connection)
     queue.declare()
-    producer.publish(message)
+    producer.publish(geo_location)
+
