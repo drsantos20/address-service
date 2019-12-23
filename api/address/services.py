@@ -1,5 +1,5 @@
 import requests
-from django.conf import settings
+from rest_framework.status import HTTP_200_OK
 
 from api.celery import app
 from celery.utils.log import get_task_logger
@@ -14,22 +14,20 @@ logger = get_task_logger(__name__)
 
 @app.task
 def get_longitude_latitude(body):
-    google_api_key = settings.GOOGLE_API_KEY
 
     try:
-        url = build_google_maps_url(body, google_api_key)
+        url = build_google_maps_url(body)
 
         response = requests.get(
             url,
             timeout=5
         )
 
-        logger.info('Google Maps API Response with HTTP Status {}'.format(response.status_code))
-
-        resp_json_payload = response.json()
-        geo_location = resp_json_payload['results'][0]['geometry']['location']
-
-        publish_metadata(address_id=body['id'], geo_location=geo_location)
+        if response.status_code == HTTP_200_OK:
+            logger.info('Google Maps API Response with HTTP Status {}'.format(response.status_code))
+            resp_json_payload = response.json()
+            geo_location = resp_json_payload['results'][0]['geometry']['location']
+            publish_metadata(address_id=body['id'], geo_location=geo_location)
 
     except requests.exceptions.HTTPError as http_error:
         return "An Http Error occurred:" + repr(http_error)

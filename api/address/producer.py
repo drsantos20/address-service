@@ -33,4 +33,4 @@ def publish_metadata(address_id, geo_location):
     queue.maybe_bind(connection)
     queue.declare()
     producer.publish(geo_location)
-
+    connection.close()
