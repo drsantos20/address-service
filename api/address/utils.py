@@ -1,36 +1,30 @@
-from api import settings
 from api.address.validations import AddressURLFormatErrorException
 
 
-def build_google_maps_url(body):
-    if not body.get('street'):
+def build_google_maps_address(address_message):
+    address = ''
+    if not address_message.get('street'):
         raise AddressURLFormatErrorException('street is a required field')
-    street = body['street']
+    street = address_message['street']
 
-    if not body.get('city'):
+    address += street
+
+    if not address_message.get('city'):
         raise AddressURLFormatErrorException('city is a required field')
-    city = body['city']
+    city = address_message['city']
 
-    if not body.get('neighborhood'):
+    address += ', ' + city
+
+    if not address_message.get('neighborhood'):
         raise AddressURLFormatErrorException('neighborhood is a required field')
-    neighborhood = body['neighborhood']
+    neighborhood = address_message['neighborhood']
 
-    if not body.get('uf'):
+    address += ', ' + neighborhood
+
+    if not address_message.get('uf'):
         raise AddressURLFormatErrorException('uf is a required field')
-    uf = body['uf']
+    uf = address_message['uf']
 
-    street = street.replace(' ', '+')
-    city = city.replace(' ', '+')
-    neighborhood = neighborhood.replace(' ', '+')
-    uf = uf.replace(' ', '+')
-    google_api_key = settings.GOOGLE_API_KEY
+    address += ', ' + uf
 
-    url = 'https://maps.googleapis.com/maps/api/geocode/json?address={}+{}+{}+{}&key={}'.format(
-        street,
-        neighborhood,
-        city,
-        uf,
-        google_api_key
-    )
-
-    return url
+    return address
