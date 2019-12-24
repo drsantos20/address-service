@@ -6,9 +6,9 @@ from kombu import Connection, Exchange, Queue, Consumer
 import socket
 
 from api.address.services import get_longitude_latitude
-from api.settings import (
+from api.address.constants import (
     ADDRESS_EXCHANGE,
-    ADDRESS_CUSTOMER_QUEUE,
+    ADDRESS_CUSTOMER_CONSUMER_QUEUE,
     ADDRESS_ROUTING_KEY,
 )
 
@@ -23,7 +23,7 @@ def consumer_from_queue():
     exchange = Exchange(ADDRESS_EXCHANGE, type='direct')
 
     queue = Queue(
-        name=ADDRESS_CUSTOMER_QUEUE,
+        name=ADDRESS_CUSTOMER_CONSUMER_QUEUE,
         routing_key=ADDRESS_ROUTING_KEY,
         exchange=exchange,
     )
