@@ -1,0 +1,6 @@
+ADDRESS_EXCHANGE = 'address-exchange'
+ADDRESS_CUSTOMER_CONSUMER_QUEUE = 'order-customer-queue'
+ADDRESS_ROUTING_KEY = 'address'
+
+ADDRESS_CUSTOMER_PRODUCER_ROUTING_KEY = 'geo-location'
+ADDRESS_CUSTOMER_PRODUCER_QUEUE = 'order-address-queue'

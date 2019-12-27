@@ -6,6 +6,11 @@ from kombu import Connection, Exchange, Queue, Consumer
 import socket
 
 from api.address.services import get_longitude_latitude
+from api.address.constants import (
+    ADDRESS_EXCHANGE,
+    ADDRESS_CUSTOMER_CONSUMER_QUEUE,
+    ADDRESS_ROUTING_KEY,
+)
 
 logger = get_task_logger(__name__)
 
@@ -15,11 +20,11 @@ def consumer_from_queue():
     connection = Connection(settings.BROKER_URL, heartbeat=5)
     connection.connect()
 
-    exchange = Exchange('example-exchange', type='direct')
+    exchange = Exchange(ADDRESS_EXCHANGE, type='direct')
 
     queue = Queue(
-        name='order-customer-queue',
-        routing_key='address',
+        name=ADDRESS_CUSTOMER_CONSUMER_QUEUE,
+        routing_key=ADDRESS_ROUTING_KEY,
         exchange=exchange,
     )
 
