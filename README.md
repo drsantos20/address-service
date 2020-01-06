@@ -19,6 +19,20 @@ Following these instructions will make this project running in your local machin
 **The entire customer app needs from other project to be up as well which is:**
 [customer-api](https://github.com/drsantos20/customer-service.git)
 
+### To run
+
+```buildoutcfg
+1- git clone https://github.com/drsantos20/customer-service.git
+2- cd customer-service
+3- docker-compose up --build
+
+4- cd ..
+5- git clone https://github.com/drsantos20/address-service.git
+5.1 Add your google maps API key into /address-service/api/settings.py -> `GOOGLE_API_KEY`
+6- cd address-service
+7- docker-compose up --build
+```
+
 ### Prerequisites
 
 - Have a google maps api key
